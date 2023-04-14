@@ -48,6 +48,13 @@
         delInput.addEventListener('input', function () {
             const text = delInput.value;
             input.value = text; // 将Del元素的input值赋给Add元素的input
+            if (text.match(/[^0-9]/g)) {
+                errorMsg.textContent = '請輸入數字';
+                button.disabled = true;
+            } else {
+                errorMsg.textContent = '';
+                button.disabled = false;
+            }
         });
 
         button.addEventListener('click', function () {

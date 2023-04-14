@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta charset="utf-8" />
+    <title>新增刪除功能測試</title>
+    <link rel="stylesheet" type="text/css" href="F-Add-Del.css" />
+</head>
+
+<body>
+    <div class="Add">
+        <div class="input_text">輸入測試</div>
+        <input type="text" class="input_frame" placeholder="請輸入數字">
+        <button class="add_btn">加入</button>
+    </div>
+    <div class="Error">
+        <div class="error_msg"> </div>
+    </div>
+    <div class="Del">
+        <div class="del_text">刪除測試</div>
+        <input type="text" class="del_frame" placeholder="">
+        <button class="del_btn">刪除</button>
+    </div>
+    <div class="Display">
+        <ul class="list"></ul>
+    </div>
+    <script>
+        const input = document.querySelector('.input_frame');
+        const button = document.querySelector('.add_btn');
+        const delInput = document.querySelector('.del_frame');
+        const delButton = document.querySelector('.del_btn');
+        const list = document.querySelector('.list');
+        const errorMsg = document.querySelector('.error_msg');
+
+        input.addEventListener('input', function () {
+            const text = input.value;
+            delInput.value = text;
+            if (text.match(/[^0-9]/g)) {
+                errorMsg.textContent = '請輸入數字';
+                button.disabled = true;
+            } else {
+                errorMsg.textContent = '';
+                button.disabled = false;
+            }
+        });
+
+        delInput.addEventListener('input', function () {
+            const text = delInput.value;
+            input.value = text; // 将Del元素的input值赋给Add元素的input
+        });
+
+        button.addEventListener('click', function () {
+            const text = input.value;
+            if (text !== '') {
+                const item = document.createElement('li');
+                item.textContent = text;
+                list.appendChild(item);
+                input.value = '';
+                delInput.value = '';
+                setTimeout(function () {
+                    item.classList.add('show'); // 添加show类名
+                }, 0); // 等待0秒后添加show类名
+            }
+        });
+
+        delButton.addEventListener('click', function () {
+            const delText = delInput.value;
+            let found = false;
+            const listItems = document.querySelectorAll('.list li');
+            for (let i = 0; i < listItems.length; i++) {
+                /*
+                if (listItems[i].textContent === delText) {
+                    listItems[i].remove();
+                    found = true;
+                }
+                */
+                //移出
+                if (listItems[i].textContent === delText) {
+                    listItems[i].classList.add('hide'); // 添加hide类名
+                    setTimeout(function () {
+                        listItems[i].remove();
+                    }, 500); // 等待0.5秒后删除列表项
+                    found = true;
+                }
+            }
+            if (!found) {
+                alert('查無資料');
+            }
+            delInput.value = '';
+            input.value = '';
+        });
+
+    </script>
+</body>
+
+</html>
